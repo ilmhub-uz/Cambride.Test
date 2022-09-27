@@ -8,13 +8,17 @@ public class FileService : IFileService
     private const string PRIVATE_DIRECTORY = "/private";
 
     public ValueTask<bool> ExistsAsync(Guid? id, CancellationToken cancellationToken = default)
-    {
-        throw new NotImplementedException();
-    }
+        => ValueTask.FromResult(Directory.EnumerateFiles(PUBLIC_DIRECTORY)
+            .Any(filename => Path.GetFileNameWithoutExtension(filename) == id.ToString()));
 
-    public ValueTask<IFile?> GetFileOrDefaultAsync(Guid? id, CancellationToken cancellationToken = default)
+    public async ValueTask<IFile?> GetFileOrDefaultAsync(Guid? id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        if((await ExistsAsync(id)) is false)
+            return null;
+
+        var path = Path.Combine(PUBLIC_DIRECTORY, $"{id}.{file.Extension}");
+
+        var bytes = System.IO.File.ReadAllBytesAsync(path, cancellationToken);
     }
 
     public async ValueTask<Guid?> SaveAsync(IFile file, CancellationToken cancellationToken = default)
