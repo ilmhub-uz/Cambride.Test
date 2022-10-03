@@ -79,6 +79,7 @@ public class FileServiceTests : IDisposable
     public void GetFileOrDefaultAsyncShouldReturnByteArrayDataWhenFileExists()
     {
         var fileService = serviceProvider.GetRequiredService<IFileService>();
+        
         // given
         var stringData = "this is to create a new file for unit test";
         var byteData = Encoding.ASCII.GetBytes(stringData);
