@@ -8,9 +8,7 @@ public class FileRepository : IFileRepository
     private readonly AppDbContext _context;
 
     public FileRepository(AppDbContext context)
-    {
-        _context = context;
-    }
+        => _context = context;
     public async ValueTask<Abstractions.Entity.File?> GetFileOrDefaultAsync(Guid? id, CancellationToken cancellationToken = default)
         => await _context.Set<Abstractions.Entity.File>().FirstOrDefaultAsync(f => f.Id == id);
 
