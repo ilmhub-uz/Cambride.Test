@@ -76,6 +76,7 @@ public class FileServiceTests : IDisposable
     }
 
     [Fact]
+
     public async Task SaveFileAsyncShouldReturnGuidWhenFileCreated()
     {
         var fileService = serviceProvider.GetRequiredService<IFileService>();
@@ -99,6 +100,17 @@ public class FileServiceTests : IDisposable
         //should 
         Assert.True(fileId is Guid);
         Assert.True(fileExists, "Newly create should exist.");
+
+    public void GetFileOrDefaultAsyncShouldReturnNullWhenFileNotExist()
+    {
+        var fileService = serviceProvider.GetRequiredService<IFileService>();
+
+        //when
+        var result = async () => await fileService.GetFileOrDefaultAsync("NonExistingFileName", CancellationToken.None);
+
+        // should
+        Assert.Null(result);
+
     }
 
     public void Dispose()
