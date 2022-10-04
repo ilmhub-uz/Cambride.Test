@@ -88,12 +88,11 @@ public class FileServiceTests : IDisposable
             filename: "exampleFile",
             extension: EAllowedExtension.txt,
             data: byteData);
-
+        
         // when 
         var fileId = await fileService.SaveAsync(file, CancellationToken.None);
         var existingFilename = $"{fileId}.{file.Extension}";
         var result = async () => await fileService.GetFileOrDefaultAsync(existingFilename, CancellationToken.None);
-
         // should
         Assert.NotNull(result);
         Assert.True(result.ToString()!.Count() > 0);
