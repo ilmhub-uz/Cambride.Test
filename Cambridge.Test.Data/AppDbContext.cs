@@ -1,4 +1,3 @@
-using System.Reflection;
 using Cambridge.Test.Data.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,10 +8,15 @@ public class AppDbContext : DbContext, IDbContext
     public DbSet<Abstractions.Entity.File>? Files { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) {}
 
-    // protected override void OnModelCreating(ModelBuilder modelBuilder)
-    // {
-    //     base.OnModelCreating(modelBuilder);
-
-    //     modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
-    // }
+    public override int SaveChanges()
+    {
+        foreach(var entry in ChangeTracker.Entries<Abstractions.Entity.File>())
+        {
+            if(entry.State == EntityState.Added)
+            {
+                entry.Entity.CreatedAt = DateTime.UtcNow;
+            }
+        }
+        return base.SaveChanges();
+    }
 }
