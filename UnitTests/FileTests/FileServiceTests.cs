@@ -75,6 +75,31 @@ public class FileServiceTests : IDisposable
         await Assert.ThrowsAsync<ArgumentNullException>(task);
     }
 
+    [Fact]
+    public async Task SaveFileAsyncShouldReturnGuidWhenFileCreated()
+    {
+        var fileService = serviceProvider.GetRequiredService<IFileService>();
+        var stringData = "Abdulaziz ";
+        var byteData = Encoding.ASCII.GetBytes(stringData);
+
+        // given
+        var file = new Cambridge.Test.File.File(
+            type: EFileType.Document,
+            filename: "hello",
+            extension: EAllowedExtension.txt,
+            data: byteData);
+
+        // when
+        Guid savedFileId;
+        var fileId = await fileService.SaveAsync(file, CancellationToken.None);
+        var existingFilename = $"{fileId}.{file.Extension}";
+        var result = await fileService.ExistsAsync(existingFilename);
+
+        // should
+        Assert.True(Guid.TryParse(fileId.ToString(), out savedFileId));
+        Assert.True(result, "Newly created file should exist.");
+    }
+
     public void Dispose()
     {
         if(Directory.Exists(PUBLIC_FOLDER))
