@@ -93,11 +93,11 @@ public class FileServiceTests : IDisposable
         Guid savedFileId;
         var fileId = await fileService.SaveAsync(file, CancellationToken.None);
         var existingFilename = $"{fileId}.{file.Extension}";
-        var result = await fileService.ExistsAsync(existingFilename);
+        var fileExists = await fileService.ExistsAsync(existingFilename);
 
         // should
-        Assert.True(Guid.TryParse(fileId.ToString(), out savedFileId));
-        Assert.True(result, "Newly created file should exist.");
+        Assert.True(fileId is Guid);
+        Assert.True(fileExists);
     }
 
     public void Dispose()
