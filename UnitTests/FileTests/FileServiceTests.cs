@@ -75,6 +75,18 @@ public class FileServiceTests : IDisposable
         await Assert.ThrowsAsync<ArgumentNullException>(task);
     }
 
+    [Fact]
+    public void GetFileOrDefaultAsyncShouldReturnNullWhenFileNotExist()
+    {
+        var fileService = serviceProvider.GetRequiredService<IFileService>();
+
+        //when
+        var result = async () => await fileService.GetFileOrDefaultAsync("NonExistingFileName", CancellationToken.None);
+
+        // should
+        Assert.Null(result);
+    }
+
     public void Dispose()
     {
         if(Directory.Exists(PUBLIC_FOLDER))
