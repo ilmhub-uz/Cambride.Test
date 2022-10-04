@@ -76,20 +76,31 @@ public class FileServiceTests : IDisposable
     }
 
     [Fact]
-    public void GetFileOrDefaultAsyncShouldReturnNullWhenFileNotExist()
+    public async Task GetFileOrDefaultAsyncShouldReturnByteArrayDataWhenFileExists()
     {
         var fileService = serviceProvider.GetRequiredService<IFileService>();
 
-        //when
-        var result = async () => await fileService.GetFileOrDefaultAsync("NonExistingFileName", CancellationToken.None);
-
+        // given
+        var stringData = "this is to create a new file for unit test";
+        var byteData = Encoding.ASCII.GetBytes(stringData);
+        var file = new Cambridge.Test.File.File(
+            type: EFileType.Document,
+            filename: "exampleFile",
+            extension: EAllowedExtension.txt,
+            data: byteData);
+        
+        // when 
+        var fileId = await fileService.SaveAsync(file, CancellationToken.None);
+        var existingFilename = $"{fileId}.{file.Extension}";
+        var result = async () => await fileService.GetFileOrDefaultAsync(existingFilename, CancellationToken.None);
         // should
-        Assert.Null(result);
+        Assert.NotNull(result);
+        Assert.True(result.ToString()!.Count() > 0);
     }
 
     public void Dispose()
     {
-        if(Directory.Exists(PUBLIC_FOLDER))
+        if (Directory.Exists(PUBLIC_FOLDER))
             Directory.Delete(PUBLIC_FOLDER, true);
     }
 }
