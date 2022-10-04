@@ -81,7 +81,7 @@ public class FileServiceTests : IDisposable
         var fileService = serviceProvider.GetRequiredService<IFileService>();
 
         //when
-        var result = async () => await fileService.GetFileOrDefaultAsync("ExistingFileName", CancellationToken.None);
+        var result = async () => await fileService.GetFileOrDefaultAsync("NonExistingFileName", CancellationToken.None);
 
         // should
         Assert.Null(result);
