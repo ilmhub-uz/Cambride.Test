@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Cambridge.Test.Data.Migrations
 {
-    public partial class Initial : Migration
+    public partial class First_Create : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,8 +14,8 @@ namespace Cambridge.Test.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Filename = table.Column<string>(type: "TEXT", nullable: true),
-                    Extension = table.Column<string>(type: "TEXT", nullable: true),
+                    Filename = table.Column<string>(type: "TEXT", maxLength: 50, nullable: true),
+                    Extension = table.Column<string>(type: "TEXT", maxLength: 20, nullable: true),
                     Path = table.Column<string>(type: "TEXT", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },

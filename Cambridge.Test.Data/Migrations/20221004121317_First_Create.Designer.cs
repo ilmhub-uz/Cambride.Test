@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Cambridge.Test.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20221004120736_Second")]
-    partial class Second
+    [Migration("20221004121317_First_Create")]
+    partial class First_Create
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
