@@ -83,7 +83,6 @@ public class FileServiceTests : IDisposable
         // given
         var stringData = "this is to create a new file for unit test";
         var byteData = Encoding.ASCII.GetBytes(stringData);
-
         var file = new Cambridge.Test.File.File(
             type: EFileType.Document,
             filename: "exampleFile",
@@ -105,4 +104,3 @@ public class FileServiceTests : IDisposable
             Directory.Delete(PUBLIC_FOLDER, true);
     }
 }
-
