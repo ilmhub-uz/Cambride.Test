@@ -76,14 +76,14 @@ public class FileServiceTests : IDisposable
     }
 
     [Fact]
-    public void GetFileOrDefaultAsyncShouldReturnByteArrayDataWhenFileExists()
+    public async Task GetFileOrDefaultAsyncShouldReturnByteArrayDataWhenFileExists()
     {
         var fileService = serviceProvider.GetRequiredService<IFileService>();
-        
+
         // given
         var stringData = "this is to create a new file for unit test";
         var byteData = Encoding.ASCII.GetBytes(stringData);
-        
+
         var file = new Cambridge.Test.File.File(
             type: EFileType.Document,
             filename: "exampleFile",
@@ -91,9 +91,10 @@ public class FileServiceTests : IDisposable
             data: byteData);
 
         // when 
-        var task = async () => await fileService.SaveAsync(file, CancellationToken.None);
-        var result = async () => await fileService.GetFileOrDefaultAsync("exampleFile", CancellationToken.None);
-        
+        var fileId = await fileService.SaveAsync(file, CancellationToken.None);
+        var existingFilename = $"{fileId}.{file.Extension}";
+        var result = async () => await fileService.GetFileOrDefaultAsync(existingFilename, CancellationToken.None);
+
         // should
         Assert.NotNull(result);
     }
