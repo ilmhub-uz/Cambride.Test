@@ -96,6 +96,7 @@ public class FileServiceTests : IDisposable
 
         // should
         Assert.NotNull(result);
+        Assert.True(result.ToString()!.Count() > 0);
     }
 
     public void Dispose()
@@ -104,3 +105,4 @@ public class FileServiceTests : IDisposable
             Directory.Delete(PUBLIC_FOLDER, true);
     }
 }
+
